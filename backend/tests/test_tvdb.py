@@ -243,7 +243,6 @@ class SearchSeriesYearFallbackTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(results[0]["image_url"], "https://artworks.thetvdb.com/banners/series/6/posters/abc.jpg")
 
 
-
 class NetworkNamesTests(unittest.TestCase):
     """TVDB v4's extended series record names the network in originalNetwork /
     latestNetwork; it has no "networks" list (swagger SeriesExtendedRecord)."""
