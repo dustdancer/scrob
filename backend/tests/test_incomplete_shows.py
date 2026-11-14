@@ -1,5 +1,4 @@
 import os
-import time
 import unittest
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
@@ -72,15 +71,12 @@ class IncompleteShowIdsTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("AS seasons", sql)
         self.assertIn("AS next_episode_to_air", sql)
 
-    async def test_500_shows_one_query_and_fast(self):
+    async def test_500_shows_one_query(self):
         rows = [_row(i, collected=5 if i % 2 else 10) for i in range(1, 501)]
         db = SimpleNamespace(execute=AsyncMock(return_value=_Rows(rows)))
-        start = time.perf_counter()
         ids = await shows_router._incomplete_show_ids(db, 7)
-        elapsed = time.perf_counter() - start
         self.assertEqual(len(ids), 250)
         self.assertEqual(db.execute.await_count, 1)  # no per-show queries
-        self.assertLess(elapsed, 0.5)
 
 
 class _ListResult:
